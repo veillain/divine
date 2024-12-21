@@ -1,0 +1,15 @@
+mode=dmenu
+allow_images=true
+allow_markup=true
+image_size=24
+term=foot
+matching=fuzzy
+insensitive=true
+orientation=vertical
+
+width=75%
+lines=3
+columns=10
+
+content_halign=center
+prompt=type to search

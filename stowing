@@ -1,0 +1,153 @@
+#!/bin/bash
+
+option=$1
+choice=$2
+current="$(pwd)"
+config="$HOME/.config"
+fonts="$current/.local/share"
+fontc="$HOME/.local/share/fonts"
+
+if ls .config; then
+	test=test
+else
+	mkdir .config
+fi &
+
+if [[ $option == -h ]] || [[ $option == --help ]]; then
+	echo "usage: stowing <operations> [...]
+operations:
+	stowing {-h --help}			print this screen
+	stowing {-i --input} [package]		copy the config into this dir/.config
+	stowing {-o --output} <package>		symlink the config selected
+	stowing -o 				symlink all configs
+	stowing -o --fonts			symlink fonts
+	stowing -o --icons			symlink icons
+	stowing -o --themes			symlink themes
+	stowing {--fonts}			copy fonts from .local/share/fonts
+	stowing {--icons}			copy .icons into this dir/.icon
+	stowing {--themes}			copy .themes into this dir/.themes
+
+use 'stowing {-h --help}' to see this"
+fi
+
+if [ $option = -i ];  then
+	for file in $choice; do
+		cp -rf $config/$file $current/.config
+		if [ $? -eq 0 ]; then
+			echo "$file stowed"
+		else
+			echo "$file failed"
+		fi
+	done
+fi
+
+
+if [ $option = --fonts ];  then
+	if ls .local/share/fonts; then
+		echo 'stowing fonts..'
+	else
+		mkdir .local
+		mkdir .local/share
+		mkdir .local/share/fonts
+	fi
+	cp -rf $fontc $fonts
+	if [ $? -eq 0 ]; then
+		echo "Fonts stowed"
+	else
+		echo "Fonts failed"
+	fi
+fi
+
+
+if [ $option = --icons ];  then
+	if ls .icons; then
+		echo 'stowing icons..'
+	else
+		mkdir .icons
+	fi
+	cp -rf $HOME/.icons $current
+	if [ $? -eq 0 ]; then
+		echo "icons stowed"
+	else
+		echo "icons failed"
+	fi
+fi
+if [ $option = --themes ];  then
+	if ls .icons; then
+		echo 'stowing themes..'
+	else
+		mkdir .icons
+	fi
+	cp -rf $HOME/.themes $current
+	if [ $? -eq 0 ]; then
+		echo "themes stowed"
+	else
+		echo "themes failed"
+	fi
+fi
+
+
+if [ $option = -o ]; then
+	if $choice; then
+		for file in $choice; do
+			rm -rf $config/$file
+			sleep 0.5
+			ln -s $current/.config/$file $config
+			if [ $? -eq 0 ]; then
+				echo "$file stowed"
+			else
+				echo "$file failed"
+			fi
+		done
+	fi
+	if [[ "$choice" == '' ]]; then
+		list="$(ls .config)"
+		for file in $list; do
+			rm -rf $config/$file
+			sleep 0.5
+			ln -s $current/.config/$file $config
+			if [ $? -eq 0 ]; then
+				echo "$file stowed"
+			else
+				echo "$file failed"
+			fi
+		done
+	fi
+	if [[ "$choice" == '--fonts' ]]; then
+		list="$(ls $fonts/fonts)"
+		for font in $list; do
+			rm -rf $fontc/$font
+			ln -s $fonts/fonts/$font $fontc
+			if [ $? -eq 0 ]; then
+				echo "font $font stowed"
+			else
+				echo "font $font failed"
+			fi
+		done
+	fi
+	if [[ "$choice" == '--icons' ]]; then
+		list="$(ls $current/.icons)"
+		for icons in $list; do
+			rm -rf $HOME/.icons/$icons
+			ln -s $current/.icons/$icons $HOME/.icons
+			if [ $? -eq 0 ]; then
+				echo "icons $font stowed"
+			else
+				echo "icons $font failed"
+			fi
+		done
+	fi
+	if [[ "$choice" == '--themes' ]]; then
+		list="$(ls $current/.themes)"
+		for themes in $list; do
+			rm -rf $HOME/.themes/$themes
+			ln -s $current/.themes/$themes $HOME/.themes
+			if [ $? -eq 0 ]; then
+				echo "themes $font stowed"
+			else
+				echo "themes $font failed"
+			fi
+		done
+	fi
+
+fi

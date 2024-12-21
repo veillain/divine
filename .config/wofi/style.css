@@ -1,0 +1,33 @@
+* {
+  border-radius: 8px;
+  border: none;
+}
+
+window {
+  font-size: 12px;
+  font-family: "CozetteHiDpi";
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 0 2 2px #000000; 
+}
+
+#input {
+  background-color: #FFFFFF;
+}
+
+entry {
+  padding: 0.5em;
+  font-size: 14px;
+  background-color: #FFFFFF;
+}
+
+image {
+  margin: 0 .5em 0em .5em;
+}
+
+outer-box {
+  background-color: transparent;
+}
+inner-box {
+  background-color: transparent;
+}

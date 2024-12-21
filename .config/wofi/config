@@ -1,0 +1,14 @@
+mode=drun
+allow_images=true
+allow_markup=true
+image_size=24
+term=foot
+matching=contain
+insensitive=true
+orientation=vertical
+dunamic_lines=true
+exec_search=true
+
+width=25%
+
+prompt=type to search
